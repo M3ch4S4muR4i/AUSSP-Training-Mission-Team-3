@@ -3,11 +3,11 @@ from bmp085 import BMP180
 from machine import Pin, I2C
 import time
 
-i2c = I2C(1, sda=Pin(2), scl=Pin(3))
+i2c = I2C(0, sda=Pin(0), scl=Pin(1))        
 imu = MPU6050(i2c)
-#bmp = BMP180(i2c)
-#bmp.oversample = 2
-#bmp.sealevel = 1022.6
+bmp = BMP180(i2c)
+bmp.oversample = 2
+bmp.sealevel = 1022.6
 
 # Create file
 file = open('Data.txt', "w")
@@ -37,11 +37,11 @@ while True:
     
     # BMP180 readings
     #need to find out how to get these readings
-    #temperature = bmp.temperature #temp in celsius
-    #pressure = bmp.pressure #pressure in hPa
+    temperature = bmp.temperature #temp in celsius
+    pressure = bmp.pressure #pressure in hPa
     #altitude = bmp.altitude
-    pressure = 0.0
-    temperature = 0.0 #theoretically better from bmp than mpu
+    #pressure = 0.0
+    #temperature = 0.0 #theoretically better from bmp than mpu
     
     
     # Readings to string    
