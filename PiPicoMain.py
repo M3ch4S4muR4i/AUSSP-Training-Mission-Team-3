@@ -3,11 +3,11 @@ from bmp085 import BMP180
 from machine import Pin, I2C
 import time
 
-i2c = I2C(0, sda=Pin(0), scl=Pin(1))        
+i2c = I2C(1, sda=Pin(14), scl=Pin(15))
 imu = MPU6050(i2c)
-bmp = BMP180(i2c)
-bmp.oversample = 2
-bmp.sealevel = 1022.6
+#bmp = BMP180(i2c)
+#bmp.oversample = 2
+#bmp.sealevel = 1022.6
 
 # Create file
 file = open('Data.txt', "w")
@@ -31,17 +31,13 @@ while True:
     x_ang_vel = imu.gyro.x
     y_ang_vel = imu.gyro.y
     z_ang_vel = imu.gyro.z
-    #temperature = imu.temperature #theoretically better from bmp than mpu
 
     
     
     # BMP180 readings
-    #need to find out how to get these readings
-    temperature = bmp.temperature #temp in celsius
-    pressure = bmp.pressure #pressure in hPa
-    #altitude = bmp.altitude
-    #pressure = 0.0
-    #temperature = 0.0 #theoretically better from bmp than mpu
+    temperature = 0#bmp.temperature #temp in celsius
+    pressure = 0#bmp.pressure #pressure in hPa
+    altitude = 0#bmp.altitude
     
     
     # Readings to string    
@@ -53,6 +49,7 @@ while True:
     zav= '{:014.10f}'.format(z_ang_vel)
     tmp= '{:014.10f}'.format(temperature)
     prs= '{:014.10f}'.format(pressure)
+    alt= '{:014.10f}'.format(altitude)
     
     
     # timer continued
@@ -64,14 +61,14 @@ while True:
     
     # Organize data
     mpuValues = '{}, {}, {}, {}, {}, {}'.format(xa, ya, za, xav, yav, zav)
-    printable = "{}, {}, {}, {}".format(stringTime, mpuValues, tmp, prs)
+    printable = "{}, {}, {}, {}, {}".format(stringTime, mpuValues, tmp, prs, alt)
 
 
     # Add to file
     file = open("Data.txt", "a")
     file.write(printable + '\n')
     file.close()
-    print("{} {} {} {}".format(stringTime, mpuValues, tmp, prs))
+    print("{} {} {} {} {}".format(stringTime, mpuValues, tmp, prs, alt))
     
     
     # buffer time
